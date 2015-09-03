@@ -1,0 +1,28 @@
+This is a tool to have a simple Vagrant-based environment to do puppet modules development.
+
+All machine have the puppet dir available on /vagrant/puppet.
+
+You can:
+1. ssh to a machine and run manually 
+sudo puppet apply --pluginsync --verbose --modulepath /vagrant/puppet/modules/ /vagrant/puppet/manifests/site.pp
+
+or do it with pprun.sh that accepts the hostname as parameter
+
+2. run ppck.sh
+That has a list of host (variable PUPPET_CLIENTS) and on all of them does:
+ - vagrant destroy
+ - vagrant up
+ - run puppet apply as in 1
+
+This is useful for perfoming tests from scratch.
+
+
+A tipical workflow is:
+- on the git repo of your puppet module create a branch for your feature (git checkout -b newfeature)
+- test it with ppck.sh until it works
+- test it the ppck.sh until it works
+- commit the changes on the puppet module repo
+- merge the branch to the master (git checkout master; git merge newfeature; git branch -d newfeature)
+- modify the metadata.json to release a new version (git tag v0.0.x; git push --all; git push --tags)
+- run 'puppet module build' to build a new tgz to upload on puppetforge
+
