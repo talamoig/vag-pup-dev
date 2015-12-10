@@ -1,0 +1,13 @@
+# The location to use for storing cached Git repos
+:cachedir: '/opt/puppetlabs/r10k/cache'
+
+# A list of git repositories to create
+:sources:   
+# This will clone the git repository and instantiate an environment per
+# branch in /etc/puppetlabs/code/environments
+  :my-org:
+    remote: 'git@gitorious.psi.ch:scicomp/daas-wp5-puppet.git'
+    basedir: '/Users/talamoig/vag-pup-dev/puppet-module-test-env/puppet/code/environments'
+  :hiera:
+    remote: 'git@gitorious.psi.ch:scicomp/daas-wp5-hiera.git'
+    basedir: '/Users/talamoig/vag-pup-dev/puppet-module-test-env/puppet/data'
