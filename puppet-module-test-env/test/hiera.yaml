@@ -1,0 +1,13 @@
+---
+:backends:
+ - yaml
+:yaml:
+  :datadir: /vagrant/test/daas-wp5-hiera/
+
+:hierarchy:
+  - "environments/%{environment}"
+  - "roles/%{role}"
+  - "profiles/%{profile}"
+  - "nodes/%{::fqdn}"
+  - common
+  - general
