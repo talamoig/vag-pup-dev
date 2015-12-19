@@ -1,0 +1,42 @@
+We want and environment where we can do puppet module development without committing anything
+to the main repository until we are not quite sure/safe about the changes.
+
+We will use vagrant for that.
+
+#+BEGIN_SRC sh :dir ~
+git clone git@github.com:talamoig/vag-pup-dev.git
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :dir ~/vag-pup-dev
+git checkout onecentos7
+cd puppet-module-test-env
+mkdir test
+cd test
+git clone hiera-repo
+git clone control-repo
+#+END_SRC
+
+#+RESULTS:
+: Branch onecentos7 set up to track remote branch onecentos7 from origin.
+
+#+BEGIN_SRC sh :dir /Users/talamoig/vag-pup-dev/puppet-module-test-env/test/control-repo
+/usr/local/bin/r10k puppetfile install  -v 2>&1
+rm -fr modules/daas
+git clone -b production roleprofile modules/baseofroleprofile
+#+END_SRC
+
+#+BEGIN_SRC sh :dir /Users/talamoig/vag-pup-dev/puppet-module-test-env
+/opt/vagrant/bin/vagrant up centos7
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC :dir file:/vagrant:qualcosa
+export LC_ALL=C
+sudo ln -sf /vagrant/test/hiera.yaml /etc/puppetlabs/code/
+sudo /opt/puppetlabs/bin/puppet apply --pluginsync --verbose --modulepath /vagrant/test/control-repo/modules -e 'include some::class
+# to debug
+#sudo /opt/puppetlabs/bin/puppet apply --pluginsync --verbose --modulepath /vagrant/test/control-repo/modules -e 'notify{hiera("message"):}'   
+#+END_SRC
